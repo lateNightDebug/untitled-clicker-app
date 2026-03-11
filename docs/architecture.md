@@ -14,8 +14,6 @@ Created by Luna McCormick, Tessa Unrau, J Wales
 
 ## Proposed Architecture: <a name="proposed">
 
----
-
 ### Start of project development choices:
 
 ---
@@ -25,8 +23,7 @@ Navigation strategy: Tabs and Stack
 Hardware integration: Speaker
 Database storage: combination of local unencrypted user data and remotely stored upgrade data
 
----
-
+    ```
     Profile tab = folder with its own Stack (profile/)
     ├── Profile page (index.tsx)
     |   └── Simple user data (local/database)
@@ -37,8 +34,7 @@ Database storage: combination of local unencrypted user data and remotely stored
     |
     ├── Clicker tab = folder with its own Stack (clicker/)
     |   └── Clicker button
-
----
+    ```
 
 ## Week 1 decisions and structure: <a name="week-1">
 
