@@ -1,4 +1,5 @@
-import { Text, View } from "react-native";
+import { router } from "expo-router";
+import { Pressable, Text, View } from "react-native";
 
 export default function Index() {
   return (
@@ -9,7 +10,10 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
+      <Text>loading page or something here!</Text>
+      <Pressable onPress={() => router.push("/(tab)")}>
+        Lets get clickin
+      </Pressable>
     </View>
   );
 }
