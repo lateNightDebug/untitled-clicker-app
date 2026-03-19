@@ -1,6 +1,7 @@
 # Untitled Clicker App architecture
 
 Course project for CPRG 303-C Mobile Application Development 1
+
 Created by Luna McCormick, Tessa Unrau, J Wales
 
 ---
@@ -19,8 +20,11 @@ Created by Luna McCormick, Tessa Unrau, J Wales
 ---
 
 Dev framework: React Native
+
 Navigation strategy: Tabs and Stack
+
 Hardware integration: Speaker
+
 Database storage: combination of local unencrypted user data and remotely stored upgrade data
 
     ```
@@ -33,7 +37,7 @@ Database storage: combination of local unencrypted user data and remotely stored
     |   └── User unlocked upgrades (index.tsx)
     |
     ├── Clicker tab = folder with its own Stack (clicker/)
-    |   └── Clicker button
+       └── Clicker button
     ```
 
 ## Week 1 decisions and structure: <a name="week-1">
