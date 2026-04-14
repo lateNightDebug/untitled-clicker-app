@@ -8,18 +8,14 @@ export default function Index() {
 
   const { session, isLoading } = useAuth();
 
-  // Week 12 - Class Code
   // Show a spinner while AsyncStorage is being read (usually < 100ms)
   if (isLoading) {
     return (
       <View style={styles.centered}>
-        <ActivityIndicator size="large" color={theme.colors.primary} />
+        <ActivityIndicator size="large" color={theme.colors.button} />
       </View>
     );
   }
-
-  
-
 
   return (
 
