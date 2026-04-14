@@ -131,7 +131,7 @@ const index = () => {
           cost={1000}
         />
       </Pressable>
-      <Pressable onPress={upgradeAuto}>
+      <Pressable onPress={upgradeAuto} disabled={playerStats.auto.unlocked}>
         <UpgradeCard
           title={"Auto Clicker Rate"}
           subtitle={`Increases the Rate that the Auto Clicker triggers current rate: ${playerStats.auto.auto_refresh}`}
