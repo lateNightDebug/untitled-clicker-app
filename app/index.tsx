@@ -13,7 +13,7 @@ export default function Index() {
     >
       <Text>loading page or something here!</Text>
       <Pressable onPress={() => router.push("/(tab)")}>
-        Lets get clickin
+        <Text>Lets get clickin</Text>
       </Pressable>
     </View>
   );
