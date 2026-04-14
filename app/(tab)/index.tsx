@@ -88,11 +88,13 @@ const index = () => {
   };
 
   return (
-    <View>
-      <Text>{playerStats.score}</Text>
-      <Pressable onPress={click} style={styles.button} disabled={isdisabled}>
-        <Text></Text>
-      </Pressable>
+    <View style={styles.container}>
+      <Text style={styles.score}>{playerStats.score}</Text>
+      <Pressable
+        onPress={click}
+        style={styles.button}
+        disabled={isdisabled}
+      ></Pressable>
       {playerStats.auto.unlocked ? (
         <Pressable onPress={autoHandler}>
           Auto Click {playerStats.auto.enabled}
@@ -108,6 +110,9 @@ const styles = StyleSheet.create({
   button: {
     width: 300,
     height: 300,
+    alignSelf: "center",
+    marginTop: 15,
+    marginBottom: 15,
     backgroundColor: theme.colors.button,
     borderRadius: 200,
     borderWidth: 3,
@@ -115,5 +120,14 @@ const styles = StyleSheet.create({
     borderLeftColor: "blue",
     borderBottomColor: "black",
     borderRightColor: "black",
+  },
+  container: {
+    backgroundColor: theme.colors.bg,
+  },
+  score: {
+    textAlign: "center",
+    marginTop: 20,
+    fontSize: 50,
+    fontFamily: "OCR A Std, monospace",
   },
 });
