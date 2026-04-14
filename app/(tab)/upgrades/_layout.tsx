@@ -7,6 +7,7 @@ export default function UpgradesLayout() {
         name="index"
         options={{
           title: "Upgrades",
+          headerTitleAlign: "center",
         }}
       />
     </Stack>

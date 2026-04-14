@@ -1,42 +1,42 @@
 import UpgradeCard from "@/components/upgradecard";
+import { user_clicker } from "@/lib/db";
 import React, { useState } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
-import { stats } from "../index";
 //this is where the upgrades will go!
 // we will likely need to make a component like the instructors AppCard to make it easier to display the list of upgrades.
 //Upgrade Ideas: base per-Click score increase (1-3-5-7), multiplier (x2,x4,x6), golden button? (%chance that the button becomes gold for x amount of time, all clicks during that time are more valuable)
 const index = () => {
-  const [playerStats, setPlayerStats] = useState<stats>({
-    baseValue: 1,
-    mult: 1.1,
+  const [playerStats, setPlayerStats] = useState<user_clicker>({
+    base_value: 1,
+    multiplier: 1.1,
     luck: 5,
     score: 0,
     refresh: 3000,
     auto: {
       enabled: false,
-      refresh: 5000,
+      auto_refresh: 5000,
       unlocked: false,
     },
   });
 
   const upgradeBase = () => {
-    if (playerStats.score < 100 * playerStats.baseValue) {
+    if (playerStats.score < 100 * playerStats.base_value) {
       //idk, make the button shake red, highlight the cost. do something.
       return;
     } else {
-      let points = playerStats.score - 100 * playerStats.baseValue;
-      let newValue = playerStats.baseValue + 1;
-      setPlayerStats({ ...playerStats, baseValue: newValue, score: points });
+      let points = playerStats.score - 100 * playerStats.base_value;
+      let newValue = playerStats.base_value + 1;
+      setPlayerStats({ ...playerStats, base_value: newValue, score: points });
     }
   };
 
   const upgradeMult = () => {
-    if (playerStats.score < 350 ** playerStats.mult) {
+    if (playerStats.score < 350 ** playerStats.multiplier) {
       return;
     } else {
-      let points = playerStats.score - 350 ** playerStats.mult;
-      let newMult = playerStats.mult + 0.05;
-      setPlayerStats({ ...playerStats, mult: newMult, score: points });
+      let points = playerStats.score - 350 ** playerStats.multiplier;
+      let newMult = playerStats.multiplier + 0.05;
+      setPlayerStats({ ...playerStats, multiplier: newMult, score: points });
     }
   };
 
@@ -71,24 +71,24 @@ const index = () => {
         auto: {
           unlocked: true,
           enabled: false,
-          refresh: playerStats.auto.refresh,
+          auto_refresh: playerStats.auto.auto_refresh,
         },
       });
     }
   };
 
   const upgradeAuto = () => {
-    if (playerStats.score < 5500 - playerStats.auto.refresh) {
+    if (playerStats.score < 6000 - playerStats.auto.auto_refresh) {
       return;
     } else {
-      let points = playerStats.score - (5500 - playerStats.auto.refresh);
-      let newAuto = playerStats.auto.refresh - 300;
+      let points = playerStats.score - (5500 - playerStats.auto.auto_refresh);
+      let newAuto = playerStats.auto.auto_refresh - 300;
       setPlayerStats({
         ...playerStats,
         auto: {
           unlocked: playerStats.auto.unlocked,
           enabled: playerStats.auto.enabled,
-          refresh: newAuto,
+          auto_refresh: newAuto,
         },
       });
     }
@@ -99,47 +99,43 @@ const index = () => {
       <Pressable onPress={upgradeBase}>
         <UpgradeCard
           title={"Base Value"}
-          subtitle={`Increase base click value. current: ${playerStats.baseValue}`}
-          cost={100 * playerStats.baseValue}
+          subtitle={`Increase base click value. current: ${playerStats.base_value}`}
+          cost={100 * playerStats.base_value}
         />
       </Pressable>
       <Pressable onPress={upgradeMult}>
         <UpgradeCard
           title={"Multiplier"}
-          subtitle={
-            "Increase point multiplier (triggers based on luck) current multiplier: "
-          }
-          cost={0}
+          subtitle={`Increase point multiplier (triggers based on luck) current multiplier: ${playerStats.multiplier}`}
+          cost={Math.ceil(350 ** playerStats.multiplier)}
         />
       </Pressable>
       <Pressable onPress={upgradeLuck}>
         <UpgradeCard
           title={"Luck"}
-          subtitle={
-            "Increases change of getting a 'Lucky click'. current luck: "
-          }
-          cost={0}
+          subtitle={`Increases change of getting a 'Lucky click'. current luck: ${playerStats.luck}%`}
+          cost={400 * playerStats.luck}
         />
       </Pressable>
       <Pressable onPress={upgradeRate}>
         <UpgradeCard
           title={"Click Rate"}
-          subtitle={"Decrease button cooldown. current cooldown: "}
-          cost={0}
+          subtitle={`Decrease button cooldown. current cooldown: ${playerStats.multiplier}`}
+          cost={5215 - playerStats.refresh}
         />
       </Pressable>
       <Pressable onPress={enableAuto}>
         <UpgradeCard
           title={"Auto Clicker"}
-          subtitle={"tired of clicking? unlock the auto clicker!"}
-          cost={0}
+          subtitle={`tired of clicking? unlock the auto clicker!`}
+          cost={1000}
         />
       </Pressable>
       <Pressable onPress={upgradeAuto}>
         <UpgradeCard
           title={"Auto Clicker Rate"}
-          subtitle={"Increases the Rate that the Auto Clicker triggers"}
-          cost={0}
+          subtitle={`Increases the Rate that the Auto Clicker triggers current rate: ${playerStats.auto.auto_refresh}`}
+          cost={6000 - playerStats.auto.auto_refresh}
         />
       </Pressable>
     </View>

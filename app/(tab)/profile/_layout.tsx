@@ -7,6 +7,7 @@ export default function ProfileLayout() {
         name="index"
         options={{
           title: "Profile",
+          headerTitleAlign: "center",
         }}
       />
     </Stack>
