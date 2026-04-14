@@ -2,41 +2,21 @@ import { theme } from "@/styles/theme";
 import { useFocusEffect } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { user_clicker, getUserClicker } from "@/lib/db";
+import { useAuth } from "@/context/AuthContext";
 
 //home page and the page with the button (click click!)
 
-export type stats = {
-  //value of each button click
-  baseValue: number;
-  //how much that base value gets multiplied if the click is "lucky"
-  mult: number;
-  //determines if a click is lucky by setting a percentage and compairing a random gen number against the users stat
-  luck: number;
-  //score stores users score, can be spent on upgrades page.
-  score: number;
-  //how long a user has to wait before the button can be clicked again (this can be upgraded).
-  refresh: number;
-  //auto clicker upgrade
-  auto: {
-    //is it unlocked?
-    unlocked: boolean;
-    //is auto Click turned on or off
-    enabled: boolean;
-    //time between auto clicker clicks.
-    refresh: number;
-  };
-};
-
 const index = () => {
-  const [playerStats, setPlayerStats] = useState<stats>({
-    baseValue: 1,
-    mult: 1.1,
+  const [playerStats, setPlayerStats] = useState<user_clicker>({
+    base_value: 1,
+    multiplier: 1.1,
     luck: 5,
     score: 0,
     refresh: 3000,
     auto: {
       enabled: false,
-      refresh: 5000,
+      auto_refresh: 5000,
       unlocked: false,
     },
   });
@@ -47,22 +27,12 @@ const index = () => {
     //replace playerStats with db stored values
     if (playerStats == null) {
       //replace newStats temp block with db info
-      let newStats: stats = {
-        baseValue: 1,
-        mult: 1,
-        luck: 5,
-        score: 0,
-        refresh: 3000,
-        auto: {
-          enabled: false,
-          refresh: 5000,
-          unlocked: false,
-        },
-      };
+      const newStats = getUserClicker(`${useAuth().user?.id}`)
+      
       //sets saved stats as the active stats.
       setPlayerStats(newStats);
-    }
-  });
+      };
+    },[]);
 
   useFocusEffect(() => {
     console.log("start", playerStats);
@@ -87,10 +57,10 @@ const index = () => {
 
     if (getRandomInt() <= playerStats.luck) {
       points = Math.ceil(
-        playerStats.score + playerStats.baseValue * playerStats.mult,
+        playerStats.score + playerStats.base_value * playerStats.multiplier,
       );
     } else {
-      points = playerStats.score + playerStats.baseValue;
+      points = playerStats.score + playerStats.base_value;
     }
     setPlayerStats({ ...playerStats, score: points });
   };
@@ -102,7 +72,7 @@ const index = () => {
         auto: {
           unlocked: false,
           enabled: false,
-          refresh: playerStats.auto.refresh,
+          auto_refresh: playerStats.auto.auto_refresh,
         },
       });
     } else {
@@ -111,7 +81,7 @@ const index = () => {
         auto: {
           unlocked: false,
           enabled: true,
-          refresh: playerStats.auto.refresh,
+          auto_refresh: playerStats.auto.auto_refresh,
         },
       });
     }
