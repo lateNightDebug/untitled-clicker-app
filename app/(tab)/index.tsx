@@ -4,7 +4,6 @@ import { user_clicker } from "@/lib/db";
 import * as storage from "@/lib/storage";
 import { STORAGE_KEYS } from "@/lib/storage";
 import { theme } from "@/styles/theme";
-import { useFocusEffect } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 //home page and the page with the button (click click!)
@@ -14,7 +13,7 @@ const index = () => {
     base_value: 1,
     multiplier: 1.1,
     luck: 5,
-    score: 0,
+    score: 100,
     refresh: 3000,
     auto: {
       enabled: false,
@@ -28,7 +27,7 @@ const index = () => {
     async function loadPlayerData(playerStats: user_clicker) {
       const saved = await storage.get<user_clicker>(STORAGE_KEYS.CLICKER_STATS);
       console.log(saved);
-      if (saved == null) {
+      if (saved === null) {
         storage.set(STORAGE_KEYS.CLICKER_STATS, playerStats);
       } else {
         setPlayerStats(saved);
@@ -43,7 +42,7 @@ const index = () => {
       storage.set(STORAGE_KEYS.CLICKER_STATS, playerStats);
     }
     setPlayerData(playerStats!);
-  }, [playerStats]);
+  }, [playerStats!.score]);
   //error catch incase something goes wrong, additionally allows for db integration for save/load.
   useEffect(() => {
     //replace playerStats with db stored values
@@ -54,13 +53,6 @@ const index = () => {
       // setPlayerStats(data);
     }
   }, []);
-
-  useFocusEffect(() => {
-    console.log("start", playerStats);
-    return () => {
-      console.log("leaving", playerStats);
-    };
-  });
 
   //used to add luck mechanic to game, allows for variance in different clicks to keep things interesting!
   function getRandomInt() {

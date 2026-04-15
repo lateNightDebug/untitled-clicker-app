@@ -25,11 +25,7 @@ const index = () => {
     async function loadPlayerData(playerStats: user_clicker) {
       const saved = await storage.get<user_clicker>(STORAGE_KEYS.CLICKER_STATS);
       console.log(saved);
-      if (saved == null) {
-        storage.set(STORAGE_KEYS.CLICKER_STATS, playerStats);
-      } else {
-        setPlayerStats(saved);
-      }
+      setPlayerStats(saved!);
       playerStats;
     }
     loadPlayerData(playerStats!);

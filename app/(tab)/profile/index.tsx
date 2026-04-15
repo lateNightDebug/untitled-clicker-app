@@ -1,5 +1,8 @@
 import { AnimatedCartoonButtonSmall } from "@/components/AnimatedCartoonButtonSmall copy";
 import { useAuth } from "@/context/AuthContext";
+import { user_clicker } from "@/lib/db";
+import * as storage from "@/lib/storage";
+import { STORAGE_KEYS } from "@/lib/storage";
 import { theme } from "@/styles/theme";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Image } from "expo-image";
@@ -15,6 +18,18 @@ const index = () => {
   const [resetText, setResetText] = useState("Reset game.");
   const [disable, setDisable] = useState(false);
 
+  const playerDefault: user_clicker = {
+    base_value: 1,
+    multiplier: 1.1,
+    luck: 5,
+    score: 10000,
+    refresh: 5000,
+    auto: {
+      unlocked: false,
+      enabled: false,
+      auto_refresh: 10000,
+    },
+  };
   const handleSignOut = async () => {
     if (signOutText == "Sign out?") {
       setSignoutText("Are you sure??????");
@@ -38,7 +53,7 @@ const index = () => {
         setResetText("Reset game.");
       }, 5000);
     } else if (resetText == "Are you sure?") {
-      //set db values to base values.
+      storage.set(STORAGE_KEYS.CLICKER_STATS, playerDefault);
       setResetText("game successfully reset!");
       setTimeout(() => {
         setResetText("Reset game.");
