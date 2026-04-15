@@ -6,6 +6,8 @@
 //   auto_clicker  — the user's auto-clicker status
 // ─────────────────────────────────────────────────────────────────────────────
 import { supabase } from "./supabase";
+import * as storage from "@/lib/storage";
+import { STORAGE_KEYS } from "@/lib/storage";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -43,6 +45,7 @@ export type user_clicker = {
   luck: number;
   score: number;
   refresh: number;
+  upgraded: boolean;
   auto: auto_clicker;
 };
 
@@ -103,6 +106,22 @@ export const getUserClicker = async (
     luck: row.luck, // from stats table
     score: row.score, // from stats table
     refresh: row.refresh, // from stats table
+    upgraded: row.upgraded,
     auto: row.auto, // spreads id, unlocked, enabled, auto_refresh from auto_clicker table
   }));
 };
+
+export const setUserData = async (user_id:string)=>{
+  storage.get<user_clicker>(STORAGE_KEYS.CLICKER_STATS)
+  const {data, error} = await supabase
+  .from('stats')
+  .update({
+    base_value: 2, // from stats table
+    multiplier: 2, // from stats table
+    luck: 10, // from stats table
+    score: 1000, // from stats table
+    refresh: 2000, // from stats table
+    upgraded: false,
+    auto: false, // spreads id, unlocked, enabled, auto_refresh from auto_clicker table
+  })
+}

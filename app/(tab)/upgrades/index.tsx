@@ -5,22 +5,27 @@ import { STORAGE_KEYS } from "@/lib/storage";
 import { theme } from "@/styles/theme";
 import React, { useEffect, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { useStats } from "@/context/statsContext";
 //this is where the upgrades will go!
 // we will likely need to make a component like the instructors AppCard to make it easier to display the list of upgrades.
 //Upgrade Ideas: base per-Click score increase (1-3-5-7), multiplier (x2,x4,x6), golden button? (%chance that the button becomes gold for x amount of time, all clicks during that time are more valuable)
 const index = () => {
-  const [playerStats, setPlayerStats] = useState<user_clicker>({
-    base_value: 1,
-    multiplier: 1.1,
-    luck: 5,
-    score: 0,
-    refresh: 3000,
-    auto: {
-      enabled: false,
-      auto_refresh: 5000,
-      unlocked: false,
-    },
-  });
+
+  const stats = useStats().playerStats;
+  const [upgrade, isUpgraded] = useState(false)
+  const [playerStats, setPlayerStats] = useState<user_clicker>(stats!
+    // {base_value: 1,
+    // multiplier: 1.1,
+    // luck: 5,
+    // score: 0,
+    // refresh: 3000,
+    // upgraded: false,
+    // auto: {
+    //   enabled: false,
+    //   auto_refresh: 5000,
+    //   unlocked: false,
+    // }}
+  );
   useEffect(() => {
     async function loadPlayerData(playerStats: user_clicker) {
       const saved = await storage.get<user_clicker>(STORAGE_KEYS.CLICKER_STATS);
@@ -47,6 +52,7 @@ const index = () => {
       setPointsError("");
     }, 10000);
   }, [pointsError]);
+
   const upgradeBase = () => {
     if (playerStats.score < 100 * playerStats.base_value) {
       //idk, make the button shake red, highlight the cost. do something.
@@ -54,8 +60,9 @@ const index = () => {
     } else {
       let points = playerStats.score - 100 * playerStats.base_value;
       let newValue = playerStats.base_value + 1;
-      setPlayerStats({ ...playerStats, base_value: newValue, score: points });
+      setPlayerStats({ ...playerStats, base_value: newValue, score: points, upgraded: true });
       setPointsError("");
+      
     }
   };
 
@@ -65,8 +72,9 @@ const index = () => {
     } else {
       let points = playerStats.score - 350 ** playerStats.multiplier;
       let newMult = playerStats.multiplier + 0.05;
-      setPlayerStats({ ...playerStats, multiplier: newMult, score: points });
+      setPlayerStats({ ...playerStats, multiplier: newMult, score: points, upgraded: true });
       setPointsError("");
+      isUpgraded(true);
     }
   };
 
@@ -76,8 +84,9 @@ const index = () => {
     } else {
       let points = playerStats.score - 400 * playerStats.luck;
       let newLuck = playerStats.luck + 3;
-      setPlayerStats({ ...playerStats, luck: newLuck, score: points });
+      setPlayerStats({ ...playerStats, luck: newLuck, score: points, upgraded: true });
       setPointsError("");
+      isUpgraded(true);
     }
   };
 
@@ -87,8 +96,9 @@ const index = () => {
     } else {
       let points = playerStats.score - (5215 - playerStats.refresh);
       let newrate = playerStats.refresh - 250;
-      setPlayerStats({ ...playerStats, refresh: newrate, score: points });
+      setPlayerStats({ ...playerStats, refresh: newrate, score: points, upgraded: true });
       setPointsError("");
+      isUpgraded(true);
     }
   };
 
@@ -99,7 +109,7 @@ const index = () => {
       let points = playerStats.score - 1000;
 
       setPlayerStats({
-        ...playerStats,
+        ...playerStats, upgraded: true,
         auto: {
           unlocked: true,
           enabled: false,
@@ -107,6 +117,7 @@ const index = () => {
         },
       });
       setPointsError("");
+      isUpgraded(true);
     }
   };
 
@@ -117,7 +128,7 @@ const index = () => {
       let points = playerStats.score - (5500 - playerStats.auto.auto_refresh);
       let newAuto = playerStats.auto.auto_refresh - 300;
       setPlayerStats({
-        ...playerStats,
+        ...playerStats, upgraded: true,
         auto: {
           unlocked: playerStats.auto.unlocked,
           enabled: playerStats.auto.enabled,
@@ -125,6 +136,7 @@ const index = () => {
         },
       });
       setPointsError("");
+      isUpgraded(true);
     }
   };
 
@@ -133,7 +145,9 @@ const index = () => {
       {pointsError ? (
         <Text style={styles.error}>{pointsError}</Text>
       ) : (
-        <View style={styles.buffer}> Your points: {playerStats.score}</View>
+        <View style={styles.buffer}> 
+        <Text>Your points: {playerStats.score}</Text>
+        </View>
       )}
       <ScrollView>
         <Pressable onPress={upgradeBase}>

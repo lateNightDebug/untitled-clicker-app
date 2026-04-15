@@ -7,22 +7,29 @@ import { theme } from "@/styles/theme";
 import { useFocusEffect } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { useStats } from "@/context/statsContext";
 //home page and the page with the button (click click!)
 
 const index = () => {
-  const [playerStats, setPlayerStats] = useState<user_clicker | undefined>({
-    base_value: 1,
-    multiplier: 1.1,
-    luck: 5,
-    score: 0,
-    refresh: 3000,
-    auto: {
-      enabled: false,
-      auto_refresh: 5000,
-      unlocked: true,
-    },
-  });
+
+  const stats = useStats().playerStats;
+  console.log(stats)
+  
+  const [playerStats, setPlayerStats] = useState<user_clicker>(stats!
+    // {base_value: 1,
+    // multiplier: 1.1,
+    // luck: 5,
+    // score: 100,
+    // refresh: 3000,
+    // upgraded: false,
+    // auto: {
+    //   enabled: false,
+    //   auto_refresh: 5000,
+    //   unlocked: true,
+    // }},
+  );
   const [isdisabled, setisdisabled] = useState<boolean>(false);
+  const [upgrade, isUpgraded] = useState(false)
 
   useEffect(() => {
     async function loadPlayerData(playerStats: user_clicker) {
@@ -36,7 +43,7 @@ const index = () => {
       playerStats;
     }
     loadPlayerData(playerStats!);
-  }, []);
+  }, [playerStats?.upgraded]);
 
   useEffect(() => {
     async function setPlayerData(playerStats: user_clicker) {
