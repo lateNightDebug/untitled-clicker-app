@@ -1,3 +1,4 @@
+import { theme } from "@/styles/theme";
 import { Stack } from "expo-router";
 
 export default function UpgradesLayout() {
@@ -8,6 +9,8 @@ export default function UpgradesLayout() {
         options={{
           title: "Upgrades",
           headerTitleAlign: "center",
+          headerShadowVisible: true,
+          headerStyle: { backgroundColor: theme.colors.bg },
         }}
       />
     </Stack>

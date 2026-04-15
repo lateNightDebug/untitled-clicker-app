@@ -8,6 +8,7 @@ export default function ProfileLayout() {
         options={{
           title: "Profile",
           headerTitleAlign: "center",
+          headerShadowVisible: true,
         }}
       />
     </Stack>

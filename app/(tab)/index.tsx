@@ -1,10 +1,10 @@
+import { AnimatedCartoonButton } from "@/components/AnimatedCartoonButton";
+import { useAuth } from "@/context/AuthContext";
+import { getUserClicker, user_clicker } from "@/lib/db";
 import { theme } from "@/styles/theme";
 import { useFocusEffect } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import { user_clicker, getUserClicker } from "@/lib/db";
-import { useAuth } from "@/context/AuthContext";
-
 //home page and the page with the button (click click!)
 
 const index = () => {
@@ -27,12 +27,12 @@ const index = () => {
     //replace playerStats with db stored values
     if (playerStats == null) {
       //replace newStats temp block with db info
-      const newStats = getUserClicker(`${useAuth().user?.id}`)
-      
+      const data = getUserClicker(`${useAuth().user?.id}`);
+
       //sets saved stats as the active stats.
-      setPlayerStats(newStats);
-      };
-    },[]);
+      setPlayerStats(data);
+    }
+  }, []);
 
   useFocusEffect(() => {
     console.log("start", playerStats);
@@ -90,11 +90,13 @@ const index = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.score}>{playerStats.score}</Text>
-      <Pressable
-        onPress={click}
-        style={styles.button}
-        disabled={isdisabled}
-      ></Pressable>
+      <View style={styles.button}>
+        <AnimatedCartoonButton
+          onPress={click}
+          isDisabled={isdisabled}
+          time={playerStats.refresh}
+        />
+      </View>
       {playerStats.auto.unlocked ? (
         <Pressable onPress={autoHandler}>
           Auto Click {playerStats.auto.enabled}
@@ -107,23 +109,18 @@ const index = () => {
 export default index;
 
 const styles = StyleSheet.create({
-  button: {
-    width: 300,
-    height: 300,
-    alignSelf: "center",
-    marginTop: 15,
-    marginBottom: 15,
-    backgroundColor: theme.colors.button,
-    borderRadius: 200,
-    borderWidth: 3,
-    borderTopColor: "blue",
-    borderLeftColor: "blue",
-    borderBottomColor: "black",
-    borderRightColor: "black",
-  },
   container: {
     backgroundColor: theme.colors.bg,
+    flex: 1,
+    alignContent: "center",
   },
+  button: {
+    flex: 1,
+    justifyContent: "center",
+    alignContent: "center",
+    width: "100%",
+  },
+
   score: {
     textAlign: "center",
     marginTop: 20,
