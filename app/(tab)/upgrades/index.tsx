@@ -1,5 +1,7 @@
 import UpgradeCard from "@/components/upgradecard";
 import { user_clicker } from "@/lib/db";
+import * as storage from "@/lib/storage";
+import { STORAGE_KEYS } from "@/lib/storage";
 import { theme } from "@/styles/theme";
 import React, { useEffect, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
@@ -19,6 +21,25 @@ const index = () => {
       unlocked: false,
     },
   });
+  useEffect(() => {
+    async function loadPlayerData(playerStats: user_clicker) {
+      const saved = await storage.get<user_clicker>(STORAGE_KEYS.CLICKER_STATS);
+      console.log(saved);
+      if (saved == null) {
+        storage.set(STORAGE_KEYS.CLICKER_STATS, playerStats);
+      } else {
+        setPlayerStats(saved);
+      }
+      playerStats;
+    }
+    loadPlayerData(playerStats!);
+  }, []);
+  useEffect(() => {
+    async function setPlayerData(playerStats: user_clicker) {
+      storage.set(STORAGE_KEYS.CLICKER_STATS, playerStats);
+    }
+    setPlayerData(playerStats!);
+  }, [playerStats]);
   const [pointsError, setPointsError] = useState("");
 
   useEffect(() => {
@@ -112,7 +133,7 @@ const index = () => {
       {pointsError ? (
         <Text style={styles.error}>{pointsError}</Text>
       ) : (
-        <View style={styles.buffer}></View>
+        <View style={styles.buffer}> Your points: {playerStats.score}</View>
       )}
       <ScrollView>
         <Pressable onPress={upgradeBase}>

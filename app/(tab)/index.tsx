@@ -10,11 +10,11 @@ import { StyleSheet, Text, View } from "react-native";
 //home page and the page with the button (click click!)
 
 const index = () => {
-  const [playerStats, setPlayerStats] = useState<user_clicker>({
+  const [playerStats, setPlayerStats] = useState<user_clicker | undefined>({
     base_value: 1,
     multiplier: 1.1,
     luck: 5,
-    score: 100,
+    score: 0,
     refresh: 3000,
     auto: {
       enabled: false,
@@ -35,9 +35,15 @@ const index = () => {
       }
       playerStats;
     }
-    loadPlayerData(playerStats);
+    loadPlayerData(playerStats!);
   }, []);
 
+  useEffect(() => {
+    async function setPlayerData(playerStats: user_clicker) {
+      storage.set(STORAGE_KEYS.CLICKER_STATS, playerStats);
+    }
+    setPlayerData(playerStats!);
+  }, [playerStats]);
   //error catch incase something goes wrong, additionally allows for db integration for save/load.
   useEffect(() => {
     //replace playerStats with db stored values
@@ -98,13 +104,13 @@ const index = () => {
         },
       });
     }
-    // while (playerStats.auto.enabled) {
-    //   setTimeout(() => {
-    //     let newscore = playerStats.score + playerStats.base_value;
-    //     setPlayerStats({ ...playerStats, score: newscore });
-    //   }, playerStats!.refresh);
-    // }
   };
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // Your logic here (e.g., updating a countdown or fetching data)
+    }, 5000); // Runs every 5 seconds
+    return () => clearInterval(interval); // Cleanup on unmount
+  }, []);
 
   return (
     <View style={styles.container}>
