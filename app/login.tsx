@@ -2,7 +2,7 @@
 // Sign-in screen. Uses React Hook Form + Zod (same pattern as profile.tsx).
 // On successful sign-in, onAuthStateChange in AuthContext updates the session,
 // which triggers AuthGuard in _layout.tsx to redirect to /(tab)/home.
-import { Ionicons } from "@expo/vector-icons";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
 import React, { useState } from "react";
@@ -77,21 +77,21 @@ const Login = () => {
         {/* ── Header ── */}
         <View style={styles.header}>
           <View style={styles.logoCircle}>
-            <Ionicons
-              name="school-outline"
-              size={36}
-              color={theme.colors.accent}
+            <FontAwesome5
+              name="dot-circle"
+              size={82}
+              color={theme.colors.button}
             />
           </View>
-          <Text style={styles.title}>Campus Hub</Text>
+          <Text style={styles.title}>UNTITLED CLICKER APP</Text>
           <Text style={styles.subtitle}>Sign in to your account</Text>
         </View>
 
         {/* ── Auth error banner (from Supabase, e.g. "Invalid login credentials") ── */}
         {authError && (
           <View style={styles.errorBanner}>
-            <Ionicons
-              name="alert-circle-outline"
+            <FontAwesome5
+              name="exclamation-circle"
               size={16}
               color={theme.colors.button}
             />
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: "#e8f0fd", // light primary tint
+    backgroundColor: theme.colors.buttonshadow,
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 16,
@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
   subtitle: {
     marginTop: 4,
     fontSize: 15,
-    color: theme.colors.muted,
+    color: theme.colors.subText,
   },
   errorBanner: {
     flexDirection: "row",
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
   errorBannerText: {
     flex: 1,
     fontSize: 14,
-    color: theme.colors.error,
+    color: theme.colors.button,
   },
   label: {
     fontSize: 14,
@@ -232,24 +232,24 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   input: {
-    backgroundColor: theme.colors.card,
+    backgroundColor: "#ffff",
     borderWidth: 1,
-    borderColor: theme.colors.border,
+    borderColor: theme.colors.bg2,
     borderRadius: theme.radius.input,
     padding: 14,
     fontSize: 16,
     color: theme.colors.text,
   },
   inputError: {
-    borderColor: theme.colors.error,
+    borderColor: theme.colors.button,
   },
   fieldError: {
-    color: theme.colors.error,
+    color: theme.colors.button,
     fontSize: 13,
     marginTop: 4,
   },
   button: {
-    backgroundColor: theme.colors.primary,
+    backgroundColor: theme.colors.bg2,
     borderRadius: theme.radius.input,
     padding: 16,
     alignItems: "center",
@@ -269,11 +269,11 @@ const styles = StyleSheet.create({
     marginTop: 24,
   },
   footerText: {
-    color: theme.colors.muted,
+    color: theme.colors.subText,
     fontSize: 15,
   },
   footerLink: {
-    color: theme.colors.primary,
+    color: theme.colors.bg2,
     fontSize: 15,
     fontWeight: "700",
   },

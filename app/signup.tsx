@@ -2,7 +2,11 @@
 // Sign-up screen. Cross-field validation (password === confirmPassword) via Zod's
 // .refine(). On success, shows a "check your email" screen if Supabase requires
 // email confirmation, or auto-signs-in if confirmation is disabled.
+import { FontAwesome5, Ionicons } from "@expo/vector-icons";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { router } from "expo-router";
 import React, { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import {
   ActivityIndicator,
   KeyboardAvoidingView,
@@ -14,11 +18,7 @@ import {
   TextInput,
   View,
 } from "react-native";
-import { router } from "expo-router";
 import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, Controller } from "react-hook-form";
-import { Ionicons } from "@expo/vector-icons";
 import { useAuth } from "../context/AuthContext"; // Week 12 - Class Code
 import { theme } from "../styles/theme";
 
@@ -35,7 +35,10 @@ const signUpSchema = z
       .regex(/[A-Z]/, "Password must contain at least one uppercase letter.")
       .regex(/[a-z]/, "Password must contain at least one lowercase letter.")
       .regex(/[0-9]/, "Password must contain at least one number.")
-      .regex(/[^A-Za-z0-9]/, "Password must contain at least one special character."),
+      .regex(
+        /[^A-Za-z0-9]/,
+        "Password must contain at least one special character.",
+      ),
     confirmPassword: z.string().min(1, "Please confirm your password."),
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -74,7 +77,7 @@ const SignUp = () => {
       setEmailSent(true);
     } catch (e) {
       setAuthError(
-        e instanceof Error ? e.message : "Sign up failed. Please try again."
+        e instanceof Error ? e.message : "Sign up failed. Please try again.",
       );
     } finally {
       setIsSubmitting(false);
@@ -87,18 +90,17 @@ const SignUp = () => {
     return (
       <View style={styles.successContainer}>
         <View style={styles.successIcon}>
-          <Ionicons
-            name="mail-outline"
-            size={56}
-            color={theme.colors.primary}
-          />
+          <Ionicons name="mail-outline" size={56} color={theme.colors.bg2} />
         </View>
         <Text style={styles.successTitle}>Check your inbox</Text>
         <Text style={styles.successMessage}>
           We sent a confirmation link to your email address. Tap the link to
           activate your account, then come back and sign in.
         </Text>
-        <Pressable style={styles.button} onPress={() => router.replace("./login")}>
+        <Pressable
+          style={styles.button}
+          onPress={() => router.replace("./login")}
+        >
           <Text style={styles.buttonText}>Go to Sign In</Text>
         </Pressable>
       </View>
@@ -120,14 +122,14 @@ const SignUp = () => {
         {/* ── Header ── */}
         <View style={styles.header}>
           <View style={styles.logoCircle}>
-            <Ionicons
-              name="school-outline"
-              size={36}
-              color={theme.colors.primary}
+            <FontAwesome5
+              name="plus-circle"
+              size={82}
+              color={theme.colors.text}
             />
           </View>
           <Text style={styles.title}>Create Account</Text>
-          <Text style={styles.subtitle}>Join Campus Hub today</Text>
+          <Text style={styles.subtitle}>Let's Get you Clicking!</Text>
         </View>
 
         {/* ── Auth error banner ── */}
@@ -136,14 +138,14 @@ const SignUp = () => {
             <Ionicons
               name="alert-circle-outline"
               size={16}
-              color={theme.colors.error}
+              color={theme.colors.button}
             />
             <Text style={styles.errorBannerText}>{authError}</Text>
           </View>
         )}
 
         {/* ── Email field ── */}
-        <Text style={styles.label}>Email</Text>
+        <Text style={styles.label}>Email: </Text>
         <Controller
           control={control}
           name="email"
@@ -151,7 +153,7 @@ const SignUp = () => {
             <TextInput
               style={[styles.input, errors.email && styles.inputError]}
               placeholder="you@example.com"
-              placeholderTextColor={theme.colors.muted}
+              placeholderTextColor={theme.colors.subText}
               value={value}
               onChangeText={onChange}
               keyboardType="email-address"
@@ -165,7 +167,7 @@ const SignUp = () => {
         )}
 
         {/* ── Password field ── */}
-        <Text style={styles.label}>Password</Text>
+        <Text style={styles.label}>Password: </Text>
         <Controller
           control={control}
           name="password"
@@ -173,7 +175,7 @@ const SignUp = () => {
             <TextInput
               style={[styles.input, errors.password && styles.inputError]}
               placeholder="Min 8 chars, upper, lower, number, symbol"
-              placeholderTextColor={theme.colors.muted}
+              placeholderTextColor={theme.colors.subText}
               value={value}
               onChangeText={onChange}
               secureTextEntry
@@ -186,7 +188,7 @@ const SignUp = () => {
         )}
 
         {/* ── Confirm Password field ── */}
-        <Text style={styles.label}>Confirm Password</Text>
+        <Text style={styles.label}>Confirm Password: </Text>
         <Controller
           control={control}
           name="confirmPassword"
@@ -197,7 +199,7 @@ const SignUp = () => {
                 errors.confirmPassword && styles.inputError,
               ]}
               placeholder="••••••••"
-              placeholderTextColor={theme.colors.muted}
+              placeholderTextColor={theme.colors.subText}
               value={value}
               onChangeText={onChange}
               secureTextEntry
@@ -206,7 +208,9 @@ const SignUp = () => {
           )}
         />
         {errors.confirmPassword && (
-          <Text style={styles.fieldError}>{errors.confirmPassword.message}</Text>
+          <Text style={styles.fieldError}>
+            {errors.confirmPassword.message}
+          </Text>
         )}
 
         {/* ── Create Account button ── */}
@@ -276,7 +280,7 @@ const styles = StyleSheet.create({
   },
   successMessage: {
     fontSize: 15,
-    color: theme.colors.muted,
+    color: theme.colors.subText,
     textAlign: "center",
     lineHeight: 22,
     marginBottom: 32,
@@ -289,7 +293,7 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: "#e8f0fd",
+    backgroundColor: theme.colors.accent,
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 16,
@@ -302,15 +306,15 @@ const styles = StyleSheet.create({
   subtitle: {
     marginTop: 4,
     fontSize: 15,
-    color: theme.colors.muted,
+    color: theme.colors.subText,
   },
   errorBanner: {
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
-    backgroundColor: "#fef2f2",
+    backgroundColor: theme.colors.button,
     borderWidth: 1,
-    borderColor: "#fecaca",
+    borderColor: theme.colors.buttonshadow,
     borderRadius: theme.radius.input,
     padding: 12,
     marginBottom: 16,
@@ -318,7 +322,7 @@ const styles = StyleSheet.create({
   errorBannerText: {
     flex: 1,
     fontSize: 14,
-    color: theme.colors.error,
+    color: "#ffff",
   },
   label: {
     fontSize: 14,
@@ -328,35 +332,37 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   input: {
-    backgroundColor: theme.colors.card,
+    backgroundColor: "#fffafa",
     borderWidth: 1,
-    borderColor: theme.colors.border,
+    borderColor: theme.colors.bg2,
     borderRadius: theme.radius.input,
     padding: 14,
     fontSize: 16,
     color: theme.colors.text,
   },
   inputError: {
-    borderColor: theme.colors.error,
+    borderColor: theme.colors.buttonshadow,
   },
   fieldError: {
-    color: theme.colors.error,
+    color: theme.colors.button,
     fontSize: 13,
     marginTop: 4,
   },
   button: {
-    backgroundColor: theme.colors.primary,
+    backgroundColor: theme.colors.accent,
     borderRadius: theme.radius.input,
     padding: 16,
     alignItems: "center",
     marginTop: 28,
+    borderWidth: 2,
+    borderColor: theme.colors.bg2,
   },
   buttonDisabled: {
     opacity: 0.6,
   },
   buttonText: {
     color: "#ffffff",
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: "700",
   },
   footer: {
@@ -365,11 +371,11 @@ const styles = StyleSheet.create({
     marginTop: 24,
   },
   footerText: {
-    color: theme.colors.muted,
+    color: theme.colors.subText,
     fontSize: 15,
   },
   footerLink: {
-    color: theme.colors.primary,
+    color: theme.colors.bg2,
     fontSize: 15,
     fontWeight: "700",
   },
