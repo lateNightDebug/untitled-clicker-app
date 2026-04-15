@@ -1,10 +1,12 @@
 import { AnimatedCartoonButton } from "@/components/AnimatedCartoonButton";
-import { useAuth } from "@/context/AuthContext";
-import { getUserClicker, user_clicker } from "@/lib/db";
+import { AnimatedCartoonButtonSmall } from "@/components/AnimatedCartoonButtonSmall copy";
+import { user_clicker } from "@/lib/db";
+import * as storage from "@/lib/storage";
+import { STORAGE_KEYS } from "@/lib/storage";
 import { theme } from "@/styles/theme";
 import { useFocusEffect } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 //home page and the page with the button (click click!)
 
 const index = () => {
@@ -12,7 +14,7 @@ const index = () => {
     base_value: 1,
     multiplier: 1.1,
     luck: 5,
-    score: 1000000000000000,
+    score: 100,
     refresh: 3000,
     auto: {
       enabled: false,
@@ -22,15 +24,28 @@ const index = () => {
   });
   const [isdisabled, setisdisabled] = useState<boolean>(false);
 
+  useEffect(() => {
+    async function loadPlayerData(playerStats: user_clicker) {
+      const saved = await storage.get<user_clicker>(STORAGE_KEYS.CLICKER_STATS);
+      console.log(saved);
+      if (saved == null) {
+        storage.set(STORAGE_KEYS.CLICKER_STATS, playerStats);
+      } else {
+        setPlayerStats(saved);
+      }
+      playerStats;
+    }
+    loadPlayerData(playerStats);
+  }, []);
+
   //error catch incase something goes wrong, additionally allows for db integration for save/load.
   useEffect(() => {
     //replace playerStats with db stored values
     if (playerStats == null) {
       //replace newStats temp block with db info
-      const data = getUserClicker(`${useAuth().user?.id}`);
-
+      // let data: user_clicker = getUserClicker(`${useAuth().user?.id}`);
       //sets saved stats as the active stats.
-      setPlayerStats(data);
+      // setPlayerStats(data);
     }
   }, []);
 
@@ -49,58 +64,63 @@ const index = () => {
   }
 
   const click = () => {
-    let points: number = playerStats.score;
+    let points: number = playerStats!.score;
     setisdisabled(true);
     setTimeout(() => {
       setisdisabled(false);
-    }, playerStats.refresh);
+    }, playerStats!.refresh);
 
-    if (getRandomInt() <= playerStats.luck) {
-      points = Math.ceil(
-        playerStats.score + playerStats.base_value * playerStats.multiplier,
-      );
+    if (getRandomInt() <= playerStats!.luck) {
+      points = Math.ceil(playerStats!.base_value * playerStats!.multiplier);
     } else {
-      points = playerStats.score + playerStats.base_value;
+      points = playerStats!.score + playerStats!.base_value;
     }
-    setPlayerStats({ ...playerStats, score: points });
+    setPlayerStats({ ...playerStats!, score: points });
   };
 
   const autoHandler = () => {
-    if (playerStats.auto.enabled) {
+    if (playerStats!.auto.enabled) {
       setPlayerStats({
-        ...playerStats,
+        ...playerStats!,
         auto: {
-          unlocked: false,
+          unlocked: true,
           enabled: false,
-          auto_refresh: playerStats.auto.auto_refresh,
+          auto_refresh: playerStats!.auto.auto_refresh,
         },
       });
     } else {
       setPlayerStats({
-        ...playerStats,
+        ...playerStats!,
         auto: {
-          unlocked: false,
+          unlocked: true,
           enabled: true,
-          auto_refresh: playerStats.auto.auto_refresh,
+          auto_refresh: playerStats!.auto.auto_refresh,
         },
       });
+    }
+    while (playerStats.auto.enabled) {
+      setTimeout(() => {
+        let newscore = playerStats.score + playerStats.base_value;
+        setPlayerStats({ ...playerStats, score: newscore });
+      }, playerStats!.refresh);
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.score}>{playerStats.score}</Text>
+      <Text style={styles.score}>{playerStats!.score}</Text>
 
       <AnimatedCartoonButton
         onPress={click}
         isDisabled={isdisabled}
-        time={playerStats.refresh}
+        time={playerStats!.refresh}
       />
 
-      {playerStats.auto.unlocked ? (
-        <Pressable onPress={autoHandler}>
-          Auto Click {playerStats.auto.enabled}
-        </Pressable>
+      {playerStats!.auto.unlocked ? (
+        <AnimatedCartoonButtonSmall
+          onPress={autoHandler}
+          title={`Auto Click ${playerStats!.auto.enabled}`}
+        />
       ) : null}
     </View>
   );
