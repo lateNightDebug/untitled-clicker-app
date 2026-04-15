@@ -19,7 +19,7 @@ const index = () => {
     auto: {
       enabled: false,
       auto_refresh: 5000,
-      unlocked: false,
+      unlocked: true,
     },
   });
   const [isdisabled, setisdisabled] = useState<boolean>(false);
@@ -98,12 +98,12 @@ const index = () => {
         },
       });
     }
-    while (playerStats.auto.enabled) {
-      setTimeout(() => {
-        let newscore = playerStats.score + playerStats.base_value;
-        setPlayerStats({ ...playerStats, score: newscore });
-      }, playerStats!.refresh);
-    }
+    // while (playerStats.auto.enabled) {
+    //   setTimeout(() => {
+    //     let newscore = playerStats.score + playerStats.base_value;
+    //     setPlayerStats({ ...playerStats, score: newscore });
+    //   }, playerStats!.refresh);
+    // }
   };
 
   return (
