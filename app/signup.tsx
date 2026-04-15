@@ -22,6 +22,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useAuth } from "../context/AuthContext"; // Week 12 - Class Code
 import { theme } from "../styles/theme";
 
+
 // ── Validation schema ─────────────────────────────────────────────────────────
 
 // .refine() lets Zod validate across multiple fields at once.
@@ -67,7 +68,8 @@ const SignUp = () => {
     try {
       setAuthError(null);
       setIsSubmitting(true);
-      await signUp(data.email, data.password); // Week 12 - Class Code
+      await signUp(data.email, data.password); 
+
       // Two possible outcomes:
       //   A) Supabase "Confirm email" disabled → session set immediately → AuthGuard redirects
       //   B) Supabase "Confirm email" enabled  → no session yet → show success screen
@@ -90,7 +92,7 @@ const SignUp = () => {
           <Ionicons
             name="mail-outline"
             size={56}
-            color={theme.colors.primary}
+            color={theme.colors.subText}
           />
         </View>
         <Text style={styles.successTitle}>Check your inbox</Text>
@@ -123,7 +125,7 @@ const SignUp = () => {
             <Ionicons
               name="school-outline"
               size={36}
-              color={theme.colors.primary}
+              color={theme.colors.subText}
             />
           </View>
           <Text style={styles.title}>Create Account</Text>
@@ -136,7 +138,7 @@ const SignUp = () => {
             <Ionicons
               name="alert-circle-outline"
               size={16}
-              color={theme.colors.error}
+              color={theme.colors.button}
             />
             <Text style={styles.errorBannerText}>{authError}</Text>
           </View>
@@ -151,7 +153,7 @@ const SignUp = () => {
             <TextInput
               style={[styles.input, errors.email && styles.inputError]}
               placeholder="you@example.com"
-              placeholderTextColor={theme.colors.muted}
+              placeholderTextColor={theme.colors.subText}
               value={value}
               onChangeText={onChange}
               keyboardType="email-address"
@@ -173,7 +175,7 @@ const SignUp = () => {
             <TextInput
               style={[styles.input, errors.password && styles.inputError]}
               placeholder="Min 8 chars, upper, lower, number, symbol"
-              placeholderTextColor={theme.colors.muted}
+              placeholderTextColor={theme.colors.subText}
               value={value}
               onChangeText={onChange}
               secureTextEntry
@@ -197,7 +199,7 @@ const SignUp = () => {
                 errors.confirmPassword && styles.inputError,
               ]}
               placeholder="••••••••"
-              placeholderTextColor={theme.colors.muted}
+              placeholderTextColor={theme.colors.subText}
               value={value}
               onChangeText={onChange}
               secureTextEntry
@@ -276,7 +278,7 @@ const styles = StyleSheet.create({
   },
   successMessage: {
     fontSize: 15,
-    color: theme.colors.muted,
+    color: theme.colors.subText,
     textAlign: "center",
     lineHeight: 22,
     marginBottom: 32,
@@ -302,7 +304,7 @@ const styles = StyleSheet.create({
   subtitle: {
     marginTop: 4,
     fontSize: 15,
-    color: theme.colors.muted,
+    color: theme.colors.subText,
   },
   errorBanner: {
     flexDirection: "row",
@@ -318,7 +320,7 @@ const styles = StyleSheet.create({
   errorBannerText: {
     flex: 1,
     fontSize: 14,
-    color: theme.colors.error,
+    color: theme.colors.button,
   },
   label: {
     fontSize: 14,
@@ -328,24 +330,24 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   input: {
-    backgroundColor: theme.colors.card,
+    backgroundColor: theme.colors.bg,
     borderWidth: 1,
-    borderColor: theme.colors.border,
+    borderColor: theme.colors.bg2,
     borderRadius: theme.radius.input,
     padding: 14,
     fontSize: 16,
     color: theme.colors.text,
   },
   inputError: {
-    borderColor: theme.colors.error,
+    borderColor: theme.colors.button,
   },
   fieldError: {
-    color: theme.colors.error,
+    color: theme.colors.button,
     fontSize: 13,
     marginTop: 4,
   },
   button: {
-    backgroundColor: theme.colors.primary,
+    backgroundColor: theme.colors.accent,
     borderRadius: theme.radius.input,
     padding: 16,
     alignItems: "center",
@@ -365,11 +367,11 @@ const styles = StyleSheet.create({
     marginTop: 24,
   },
   footerText: {
-    color: theme.colors.muted,
+    color: theme.colors.subText,
     fontSize: 15,
   },
   footerLink: {
-    color: theme.colors.primary,
+    color: theme.colors.accent,
     fontSize: 15,
     fontWeight: "700",
   },
