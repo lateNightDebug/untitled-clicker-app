@@ -9,7 +9,7 @@ export default function UpgradesLayout() {
         options={{
           title: "Upgrades",
           headerTitleAlign: "center",
-          headerShadowVisible: false,
+          headerShadowVisible: true,
           headerStyle: { backgroundColor: theme.colors.bg2 },
           headerTintColor: "#fff",
           headerTitleStyle: { fontSize: 30, fontWeight: "bold" },

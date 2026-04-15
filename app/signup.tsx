@@ -2,13 +2,13 @@
 // Sign-up screen. Cross-field validation (password === confirmPassword) via Zod's
 // .refine(). On success, shows a "check your email" screen if Supabase requires
 // email confirmation, or auto-signs-in if confirmation is disabled.
+import { AnimatedCartoonButtonSmall } from "@/components/AnimatedCartoonButtonSmall copy";
 import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
-  ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -213,20 +213,12 @@ const SignUp = () => {
           </Text>
         )}
 
-        {/* ── Create Account button ── */}
-        <Pressable
-          style={[styles.button, isSubmitting && styles.buttonDisabled]}
+        <AnimatedCartoonButtonSmall
           onPress={handleSubmit(onSubmit)}
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? (
-            <ActivityIndicator color="#ffffff" />
-          ) : (
-            <Text style={styles.buttonText}>Create Account</Text>
-          )}
-        </Pressable>
+          isDisabled={isSubmitting}
+          title="Create Account"
+        />
 
-        {/* ── Link to Sign In ── */}
         <View style={styles.footer}>
           <Text style={styles.footerText}>Already have an account? </Text>
           <Pressable onPress={() => router.replace("./login")}>
@@ -239,8 +231,6 @@ const SignUp = () => {
 };
 
 export default SignUp;
-
-// ── Styles ────────────────────────────────────────────────────────────────────
 
 const styles = StyleSheet.create({
   flex: {
@@ -338,6 +328,7 @@ const styles = StyleSheet.create({
     borderRadius: theme.radius.input,
     padding: 14,
     fontSize: 16,
+    marginBottom: 10,
     color: theme.colors.text,
   },
   inputError: {

@@ -2,13 +2,13 @@
 // Sign-in screen. Uses React Hook Form + Zod (same pattern as profile.tsx).
 // On successful sign-in, onAuthStateChange in AuthContext updates the session,
 // which triggers AuthGuard in _layout.tsx to redirect to /(tab)/home.
+import { AnimatedCartoonButtonSmall } from "@/components/AnimatedCartoonButtonSmall copy";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
-  ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -142,18 +142,11 @@ const Login = () => {
           <Text style={styles.fieldError}>{errors.password.message}</Text>
         )}
 
-        {/* ── Sign In button ── */}
-        <Pressable
-          style={[styles.button, isSubmitting && styles.buttonDisabled]}
+        <AnimatedCartoonButtonSmall
           onPress={handleSubmit(onSubmit)}
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? (
-            <ActivityIndicator color="#ffffff" />
-          ) : (
-            <Text style={styles.buttonText}>Sign In</Text>
-          )}
-        </Pressable>
+          isDisabled={isSubmitting}
+          title="Sign In"
+        />
 
         {/* ── Link to Sign Up ── */}
         <View style={styles.footer}>
@@ -238,6 +231,7 @@ const styles = StyleSheet.create({
     borderRadius: theme.radius.input,
     padding: 14,
     fontSize: 16,
+    marginBottom: 10,
     color: theme.colors.text,
   },
   inputError: {

@@ -6,6 +6,7 @@ export const theme = {
     bg: "#90C2E7",
     button: "#C20114",
     accent: "#07C586",
+    accentshadow: "#069162",
     shadow: "#000000",
     buttonshadow: "#a20111",
   },
