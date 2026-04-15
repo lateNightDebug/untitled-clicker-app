@@ -12,7 +12,7 @@ const index = () => {
     base_value: 1,
     multiplier: 1.1,
     luck: 5,
-    score: 0,
+    score: 1000000000000000,
     refresh: 3000,
     auto: {
       enabled: false,
@@ -90,13 +90,13 @@ const index = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.score}>{playerStats.score}</Text>
-      <View style={styles.button}>
-        <AnimatedCartoonButton
-          onPress={click}
-          isDisabled={isdisabled}
-          time={playerStats.refresh}
-        />
-      </View>
+
+      <AnimatedCartoonButton
+        onPress={click}
+        isDisabled={isdisabled}
+        time={playerStats.refresh}
+      />
+
       {playerStats.auto.unlocked ? (
         <Pressable onPress={autoHandler}>
           Auto Click {playerStats.auto.enabled}
@@ -114,17 +114,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignContent: "center",
   },
-  button: {
-    flex: 1,
-    justifyContent: "center",
-    alignContent: "center",
-    width: "100%",
-  },
 
   score: {
     textAlign: "center",
-    marginTop: 20,
+    marginTop: 100,
+    marginBottom: 100,
     fontSize: 50,
     fontFamily: "OCR A Std, monospace",
+    fontWeight: "bold",
   },
 });

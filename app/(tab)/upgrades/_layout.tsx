@@ -9,8 +9,10 @@ export default function UpgradesLayout() {
         options={{
           title: "Upgrades",
           headerTitleAlign: "center",
-          headerShadowVisible: true,
-          headerStyle: { backgroundColor: theme.colors.bg },
+          headerShadowVisible: false,
+          headerStyle: { backgroundColor: theme.colors.bg2 },
+          headerTintColor: "#fff",
+          headerTitleStyle: { fontSize: 30, fontWeight: "bold" },
         }}
       />
     </Stack>

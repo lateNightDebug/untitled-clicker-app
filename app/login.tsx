@@ -2,7 +2,11 @@
 // Sign-in screen. Uses React Hook Form + Zod (same pattern as profile.tsx).
 // On successful sign-in, onAuthStateChange in AuthContext updates the session,
 // which triggers AuthGuard in _layout.tsx to redirect to /(tab)/home.
+import { Ionicons } from "@expo/vector-icons";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { router } from "expo-router";
 import React, { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import {
   ActivityIndicator,
   KeyboardAvoidingView,
@@ -14,11 +18,7 @@ import {
   TextInput,
   View,
 } from "react-native";
-import { router } from "expo-router";
 import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, Controller } from "react-hook-form";
-import { Ionicons } from "@expo/vector-icons";
 import { useAuth } from "../context/AuthContext"; // Week 12 - Class Code
 import { theme } from "../styles/theme";
 
@@ -57,7 +57,7 @@ const Login = () => {
       // and redirects to /(tab)/home once session becomes non-null.
     } catch (e) {
       setAuthError(
-        e instanceof Error ? e.message : "Sign in failed. Please try again."
+        e instanceof Error ? e.message : "Sign in failed. Please try again.",
       );
     } finally {
       setIsSubmitting(false);
@@ -80,7 +80,7 @@ const Login = () => {
             <Ionicons
               name="school-outline"
               size={36}
-              color={theme.colors.primary}
+              color={theme.colors.accent}
             />
           </View>
           <Text style={styles.title}>Campus Hub</Text>
@@ -93,7 +93,7 @@ const Login = () => {
             <Ionicons
               name="alert-circle-outline"
               size={16}
-              color={theme.colors.error}
+              color={theme.colors.button}
             />
             <Text style={styles.errorBannerText}>{authError}</Text>
           </View>
@@ -108,7 +108,7 @@ const Login = () => {
             <TextInput
               style={[styles.input, errors.email && styles.inputError]}
               placeholder="you@example.com"
-              placeholderTextColor={theme.colors.muted}
+              placeholderTextColor={theme.colors.subText}
               value={value}
               onChangeText={onChange}
               keyboardType="email-address"
@@ -130,7 +130,7 @@ const Login = () => {
             <TextInput
               style={[styles.input, errors.password && styles.inputError]}
               placeholder="••••••••"
-              placeholderTextColor={theme.colors.muted}
+              placeholderTextColor={theme.colors.subText}
               value={value}
               onChangeText={onChange}
               secureTextEntry

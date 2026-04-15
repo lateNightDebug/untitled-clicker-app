@@ -5,6 +5,7 @@ type Props = {
   title: string;
   subtitle?: string;
   cost: number;
+  disabled?: boolean;
 };
 // React.ReactNode is a TypeScript type that means: "anything React can render."
 export default function UpgradeCard({ title, subtitle, cost }: Props) {
@@ -21,15 +22,17 @@ export default function UpgradeCard({ title, subtitle, cost }: Props) {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: theme.colors.bg,
+    backgroundColor: theme.colors.accent,
     borderRadius: theme.radius.card,
     padding: theme.spacing.card,
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: theme.colors.bg2,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     marginBottom: theme.spacing.gap,
+    shadowOpacity: 50,
+    shadowColor: theme.colors.text,
   },
   textWrap: {
     flex: 1,

@@ -30,10 +30,9 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Text>loading page or something here!</Text>
-      <Pressable onPress={() => router.push("/(tab)")}>
-        <Text>Lets get clickin</Text>
-      </Pressable>
+      <Text style={styles.title}>UNTITLED CLICKER APP</Text>
+
+      <Text style={styles.splash}>Lets get clickin</Text>
       <Pressable onPress={() => router.push("../login")}>
         <Text>login</Text>
       </Pressable>
@@ -50,4 +49,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  title: {},
+  splash: {},
 });

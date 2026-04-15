@@ -1,7 +1,7 @@
 import UpgradeCard from "@/components/upgradecard";
 import { user_clicker } from "@/lib/db";
 import { theme } from "@/styles/theme";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 //this is where the upgrades will go!
 // we will likely need to make a component like the instructors AppCard to make it easier to display the list of upgrades.
@@ -21,6 +21,11 @@ const index = () => {
   });
   const [pointsError, setPointsError] = useState("");
 
+  useEffect(() => {
+    setTimeout(() => {
+      setPointsError("");
+    }, 10000);
+  }, [pointsError]);
   const upgradeBase = () => {
     if (playerStats.score < 100 * playerStats.base_value) {
       //idk, make the button shake red, highlight the cost. do something.
@@ -107,7 +112,7 @@ const index = () => {
       {pointsError ? (
         <Text style={styles.error}>{pointsError}</Text>
       ) : (
-        <Text></Text>
+        <View style={styles.buffer}></View>
       )}
       <ScrollView>
         <Pressable onPress={upgradeBase}>
@@ -161,11 +166,23 @@ export default index;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: theme.colors.bg2,
+    backgroundColor: theme.colors.bg,
+    flex: 1,
   },
 
   error: {
     textAlign: "center",
-    fontSize: 15,
+    fontSize: 20,
+    padding: 10,
+    color: "#ffffff",
+    backgroundColor: theme.colors.button,
+    margin: 15,
+    borderWidth: 2,
+    borderColor: theme.colors.buttonshadow,
+    borderRadius: 50,
+  },
+  buffer: {
+    padding: 12,
+    margin: 15,
   },
 });
