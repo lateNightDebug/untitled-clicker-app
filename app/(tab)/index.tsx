@@ -6,38 +6,59 @@ import { user_clicker, getUserClicker } from "@/lib/db";
 import { useAuth } from "@/context/AuthContext";
 
 //home page and the page with the button (click click!)
-//setPlayerStats:{(value: SetStateAction<user_clicker>): void; (arg0: any): void;}
-// async function something() {
+
+// async function something(setPlayerStats:{(value: SetStateAction<user_clicker>): void; (arg0: any): void;}) {
   
 //     const storedStats: user_clicker = await getUserClicker(`${useAuth().user?.id}`)  
 //     console.log("user data: ", storedStats)
-    
-//     return(storedStats)
+//     setPlayerStats(storedStats)
+//     //return(storedStats)
    
 // }
 
 const index = () => {
 
+  const user = useAuth().user
+  console.log(`user ID: ${user?.id}`) 
   const [playerStats, setPlayerStats] = useState<user_clicker>(
-    {
-          base_value: 0,
-          multiplier: 0,
-          luck: 0,
-          score: 0,
-          refresh: 0,
-          auto_unlocked: false,
-          auto_enabled: false,
-          auto_refresh: 0,
-        }
+    
   );
 
-  useEffect(() => {
-  async function loadUserData() {
-    const data = await getUserClicker(`${useAuth().user?.id}`);
-    if (data) setPlayerStats(data);
-  }
-  loadUserData();
-}, []);
+  
+      const data: user_clicker = getUserClicker(`${user?.id}`);
+      console.log("user data:", data)
+      setPlayerStats(data)
+      console.log(playerStats)
+  
+
+//   useEffect(() => {
+//     async function loadUserData(id:string) {
+//       const data: user_clicker = await getUserClicker(id);
+//       console.log("user data:", data)
+//       if (data == null){
+//         let tempStats = {
+//           base_value: 0,
+//           multiplier: 0,
+//           luck: 0,
+//           score: 0,
+//           refresh: 0,
+//           auto_unlocked: false,
+//           auto_enabled: false,
+//           auto_refresh: 0,
+//         }
+//         setPlayerStats(tempStats)
+//         console.log(playerStats)
+//       } else {
+//         setPlayerStats(data);
+//         console.log(playerStats)
+//       }
+      
+//       console.log(playerStats)
+//     }
+//   console.log(`user ID: ${user?.id}`)  
+//   loadUserData(`${user?.id}`);
+  
+// }, []);
 
   
   //const storedStats: user_clicker = getUserClicker(`${useAuth().user?.id}`)  
@@ -59,11 +80,11 @@ const index = () => {
   // useEffect(() => {
     
   //   //replace playerStats with db stored values
-  //   if (storedStats != null) {
+  //   if (storedStats != undefined) {
   //     //replace newStats temp block with db info
       
   //     setPlayerStats(storedStats);
-  //     console.log("user are using stored adata!")
+  //     console.log("user are using stored data!")
   //     }else{
   //       const newclicker: user_clicker = {
   //         base_value: 0,
@@ -95,18 +116,18 @@ const index = () => {
   }
 
   const click = () => {
-    let points: number = playerStats.score;
+    let points: number = playerStats!.score;
     setisdisabled(true);
     setTimeout(() => {
       setisdisabled(false);
     }, playerStats!.refresh);
 
-    if (getRandomInt() <= playerStats.luck) {
+    if (getRandomInt() <= playerStats!.luck) {
       points = Math.ceil(
-        playerStats.score + playerStats.base_value * playerStats.multiplier,
+        playerStats!.score + playerStats!.base_value * playerStats!.multiplier,
       );
     } else {
-      points = playerStats.score + playerStats.base_value;
+      points = playerStats!.score + playerStats!.base_value;
     }
     setPlayerStats({ ...playerStats!, score: points });
   };

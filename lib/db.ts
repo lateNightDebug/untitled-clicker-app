@@ -115,7 +115,6 @@ export const getUserClicker = async (user_id: string): Promise<user_clicker> => 
     auto_unlocked: row.auto_unlocked,
     auto_refresh: row.auto_refresh
   }));
-  console.log("data is: ",data)
   const clicker: user_clicker = {
     base_value: dataArray[0].base_value,
     multiplier: dataArray[0].multiplier,
