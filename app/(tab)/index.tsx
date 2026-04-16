@@ -27,11 +27,11 @@ const index = () => {
     base_value: 1,
     multiplier: 1,
     luck: 5,
-    score: 100,
-    refresh: 3000,
+    score: 0,
+    refresh: 1000,
     auto: {
       enabled: false,
-      auto_refresh: 1000,
+      auto_refresh: 5000,
       unlocked: false,
     },
   };
