@@ -17,7 +17,7 @@ const index = () => {
     score: 100,
     refresh: 1000,
     auto: {
-      enabled: true,
+      enabled: false,
       auto_refresh: 5000,
       unlocked: false,
     },
