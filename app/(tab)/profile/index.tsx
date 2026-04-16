@@ -53,7 +53,7 @@ const index = () => {
         setResetText("Reset game.");
       }, 5000);
     } else if (resetText == "Are you sure?") {
-      storage.set(STORAGE_KEYS.CLICKER_STATS, playerDefault);
+      storage.set(STORAGE_KEYS.CLICKER_STATS, null);
       setResetText("game successfully reset!");
       setTimeout(() => {
         setResetText("Reset game.");
@@ -76,7 +76,8 @@ const index = () => {
             alt="oh look, its you!"
           />
         </View>
-        <Text style={styles.username}>Your Username Here</Text>
+
+        <Text style={styles.username}>{useAuth().user?.email}</Text>
       </View>
       <AnimatedCartoonButtonSmall
         onPress={handleSignOut}

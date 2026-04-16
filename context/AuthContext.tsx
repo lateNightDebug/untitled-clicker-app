@@ -13,16 +13,16 @@
 //   screen has a logout button. Passing this through props would be a nightmare.
 //   Context gives every component access without prop drilling.
 // ─────────────────────────────────────────────────────────────────────────────
-import React, { createContext, useContext, useEffect, useState } from "react";
 import type { Session, User } from "@supabase/supabase-js";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
 type AuthContextType = {
-  session: Session | null;         // null = not signed in
-  user: User | null;               // shortcut for session?.user
-  isLoading: boolean;              // true while loading session from storage
+  session: Session | null; // null = not signed in
+  user: User | null; // shortcut for session?.user
+  isLoading: boolean; // true while loading session from storage
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
@@ -43,7 +43,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     // 1. Load any existing session from AsyncStorage (set by a previous sign-in)
     //    This is how "stay logged in" works — we check storage before showing any screen.
-    supabase.auth.getSession()
+    supabase.auth
+      .getSession()
       .then(({ data: { session } }) => {
         setSession(session);
       })
@@ -59,7 +60,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     //    This is the single place that updates session state — no manual state
     //    management needed after signIn() or signOut() calls.
     const {
-      data: { subscription },} = supabase.auth.onAuthStateChange((_event, session) => {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
     });
 
@@ -71,7 +73,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   // Week 12 - Class Code
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
     if (error) throw error;
     // On success: onAuthStateChange fires → session state updates → AuthGuard redirects
   };

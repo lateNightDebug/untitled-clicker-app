@@ -4,14 +4,19 @@ import { user_clicker } from "@/lib/db";
 import * as storage from "@/lib/storage";
 import { STORAGE_KEYS } from "@/lib/storage";
 import { theme } from "@/styles/theme";
-import React, { useEffect, useState } from "react";
+import { useFocusEffect } from "expo-router";
+import React, { useCallback, useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 //home page and the page with the button (click click!)
+// type clickprop={
+//   lplayerstats: user_clicker,
+//   lsetPlayerStats: ()
+// };
 
 const index = () => {
-  const [playerStats, setPlayerStats] = useState<user_clicker | undefined>({
+  const [playerStats, setPlayerStats] = useState<user_clicker>({
     base_value: 1,
-    multiplier: 1.1,
+    multiplier: 1,
     luck: 5,
     score: 100,
     refresh: 3000,
@@ -21,38 +26,77 @@ const index = () => {
       unlocked: true,
     },
   });
-  const [isdisabled, setisdisabled] = useState<boolean>(false);
 
-  useEffect(() => {
-    async function loadPlayerData(playerStats: user_clicker) {
-      const saved = await storage.get<user_clicker>(STORAGE_KEYS.CLICKER_STATS);
-      console.log(saved);
-      if (saved === null) {
-        storage.set(STORAGE_KEYS.CLICKER_STATS, playerStats);
-      } else {
-        setPlayerStats(saved);
+  const DEFAULTS: user_clicker = {
+    base_value: 1,
+    multiplier: 1,
+    luck: 5,
+    score: 100,
+    refresh: 3000,
+    auto: {
+      enabled: false,
+      auto_refresh: 5000,
+      unlocked: true,
+    },
+  };
+  const [isdisabled, setisdisabled] = useState<boolean>(false);
+  (useFocusEffect(
+    // Callback should be wrapped in `React.useCallback` to avoid running the effect too often.
+    useCallback(() => {
+      // Invoked whenever the route is focused.
+      async function loadPlayerData() {
+        const saved = await storage.get<user_clicker>(
+          STORAGE_KEYS.CLICKER_STATS,
+        );
+        console.log("local storage response", saved);
+        if (saved === null) {
+          storage.set(STORAGE_KEYS.CLICKER_STATS, DEFAULTS);
+        } else {
+          setPlayerStats(saved);
+          console.log("focus", saved);
+        }
       }
-      playerStats;
-    }
-    loadPlayerData(playerStats!);
-  }, []);
+
+      loadPlayerData();
+      console.log("Hello, I'm focused!", playerStats);
+
+      // Return function is invoked whenever the route gets out of focus.
+
+      return () => {
+        // async function setPlayerData(playerStats: user_clicker) {
+        //   storage.set(STORAGE_KEYS.CLICKER_STATS, playerStats);
+        // }
+        // setPlayerData(playerStats!);
+        // console.log("This route is now unfocused.", playerStats);
+      };
+    }, []),
+  ),
+    useEffect(() => {
+      async function loadPlayerData(playerStats: user_clicker) {
+        const saved = await storage.get<user_clicker>(
+          STORAGE_KEYS.CLICKER_STATS,
+        );
+        console.log("pre null check", saved);
+        if (saved === null) {
+          console.log("setting default");
+          storage.set(STORAGE_KEYS.CLICKER_STATS, playerStats);
+        } else {
+          setPlayerStats(saved);
+        }
+        playerStats;
+      }
+
+      loadPlayerData(playerStats!);
+    }, []));
 
   useEffect(() => {
     async function setPlayerData(playerStats: user_clicker) {
       storage.set(STORAGE_KEYS.CLICKER_STATS, playerStats);
     }
+    console.log("saving click", playerStats);
     setPlayerData(playerStats!);
   }, [playerStats!.score]);
   //error catch incase something goes wrong, additionally allows for db integration for save/load.
-  useEffect(() => {
-    //replace playerStats with db stored values
-    if (playerStats == null) {
-      //replace newStats temp block with db info
-      // let data: user_clicker = getUserClicker(`${useAuth().user?.id}`);
-      //sets saved stats as the active stats.
-      // setPlayerStats(data);
-    }
-  }, []);
 
   //used to add luck mechanic to game, allows for variance in different clicks to keep things interesting!
   function getRandomInt() {
@@ -97,23 +141,15 @@ const index = () => {
       });
     }
   };
-  useEffect(() => {
-    const interval = setInterval(() => {
-      // Your logic here (e.g., updating a countdown or fetching data)
-    }, 5000); // Runs every 5 seconds
-    return () => clearInterval(interval); // Cleanup on unmount
-  }, []);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.score}>{playerStats!.score}</Text>
-
+      <Text style={styles.score}>{playerStats?.score}</Text>
       <AnimatedCartoonButton
         onPress={click}
         isDisabled={isdisabled}
         time={playerStats!.refresh}
       />
-
       {playerStats!.auto.unlocked ? (
         <AnimatedCartoonButtonSmall
           onPress={autoHandler}
