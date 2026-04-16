@@ -68,7 +68,7 @@ const SignUp = () => {
     try {
       setAuthError(null);
       setIsSubmitting(true);
-      await signUp(data.email, data.password); // Week 12 - Class Code
+      await signUp(data.email, data.password); 
       // Two possible outcomes:
       //   A) Supabase "Confirm email" disabled → session set immediately → AuthGuard redirects
       //   B) Supabase "Confirm email" enabled  → no session yet → show success screen
