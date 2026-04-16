@@ -49,8 +49,9 @@ const index = () => {
           STORAGE_KEYS.CLICKER_STATS,
         );
         console.log("local storage response", saved);
-        if (saved === null) {
+        if (saved == null) {
           storage.set(STORAGE_KEYS.CLICKER_STATS, DEFAULTS);
+          setPlayerStats(DEFAULTS);
         } else {
           setPlayerStats(saved);
           console.log("focus", saved);
