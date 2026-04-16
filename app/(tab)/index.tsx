@@ -114,7 +114,7 @@ const index = () => {
     }, playerStats!.refresh);
 
     if (getRandomInt() <= playerStats!.luck) {
-      points = Math.ceil(playerStats!.base_value * playerStats!.multiplier);
+      points = playerStats!.score + (playerStats!.base_value * playerStats!.multiplier);
     } else {
       points = playerStats!.score + playerStats!.base_value;
     }
