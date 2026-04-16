@@ -19,7 +19,7 @@ import {
   View,
 } from "react-native";
 import { z } from "zod";
-import { useAuth } from "../context/AuthContext"; // Week 12 - Class Code
+import { useAuth } from "../context/AuthContext"; 
 import { theme } from "../styles/theme";
 
 // ── Validation schema ─────────────────────────────────────────────────────────
@@ -34,7 +34,7 @@ type LoginForm = z.infer<typeof loginSchema>;
 // ── Component ─────────────────────────────────────────────────────────────────
 
 const Login = () => {
-  const { signIn } = useAuth(); // Week 12 - Class Code
+  const { signIn } = useAuth(); 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
 
