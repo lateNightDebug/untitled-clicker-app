@@ -1,7 +1,7 @@
-// Week 12: Supabase Auth — NEW file
-// Sign-in screen. Uses React Hook Form + Zod (same pattern as profile.tsx).
+
+// Sign-in screen
 // On successful sign-in, onAuthStateChange in AuthContext updates the session,
-// which triggers AuthGuard in _layout.tsx to redirect to /(tab)/home.
+// which triggers AuthGuard in _layout.tsx to redirect to /(tab)/index
 import { AnimatedCartoonButtonSmall } from "@/components/AnimatedCartoonButtonSmall copy";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -52,7 +52,7 @@ const Login = () => {
     try {
       setAuthError(null);
       setIsSubmitting(true);
-      await signIn(data.email, data.password); // Week 12 - Class Code
+      await signIn(data.email, data.password);
       // No manual navigation needed — AuthGuard in _layout.tsx watches the session
       // and redirects to /(tab)/home once session becomes non-null.
     } catch (e) {

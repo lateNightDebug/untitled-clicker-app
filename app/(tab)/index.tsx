@@ -8,10 +8,6 @@ import { useFocusEffect } from "expo-router";
 import React, { useCallback, useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 //home page and the page with the button (click click!)
-// type clickprop={
-//   lplayerstats: user_clicker,
-//   lsetPlayerStats: ()
-// };
 
 const index = () => {
   const [playerStats, setPlayerStats] = useState<user_clicker>({
@@ -64,11 +60,7 @@ const index = () => {
       // Return function is invoked whenever the route gets out of focus.
 
       return () => {
-        // async function setPlayerData(playerStats: user_clicker) {
-        //   storage.set(STORAGE_KEYS.CLICKER_STATS, playerStats);
-        // }
-        // setPlayerData(playerStats!);
-        // console.log("This route is now unfocused.", playerStats);
+      
       };
     }, []),
   ),

@@ -1,3 +1,5 @@
+
+// outdated version of db callers. newer version on another branch, to be implemented at a later date.
 // ─────────────────────────────────────────────────────────────────────────────
 // db.ts — All Supabase database queries for untitled clicker app
 //

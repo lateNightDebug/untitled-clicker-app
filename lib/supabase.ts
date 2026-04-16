@@ -1,4 +1,4 @@
-// Week 12: Supabase Auth — NEW file
+// Supabase auth file
 // ─────────────────────────────────────────────────────────────────────────────
 // Supabase client — the single connection point between the app and Supabase.
 //

@@ -1,4 +1,4 @@
-// Week 12: Supabase Auth — NEW file
+
 // Sign-up screen. Cross-field validation (password === confirmPassword) via Zod's
 // .refine(). On success, shows a "check your email" screen if Supabase requires
 // email confirmation, or auto-signs-in if confirmation is disabled.
@@ -19,13 +19,11 @@ import {
   View,
 } from "react-native";
 import { z } from "zod";
-import { useAuth } from "../context/AuthContext"; // Week 12 - Class Code
+import { useAuth } from "../context/AuthContext"; 
 import { theme } from "../styles/theme";
 
 // ── Validation schema ─────────────────────────────────────────────────────────
 
-// .refine() lets Zod validate across multiple fields at once.
-// The path: ['confirmPassword'] makes the error appear under that specific field.
 const signUpSchema = z
   .object({
     email: z.string().trim().email("Please enter a valid email address."),
@@ -51,7 +49,7 @@ type SignUpForm = z.infer<typeof signUpSchema>;
 // ── Component ─────────────────────────────────────────────────────────────────
 
 const SignUp = () => {
-  const { signUp } = useAuth(); // Week 12 - Class Code
+  const { signUp } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
   const [emailSent, setEmailSent] = useState(false); // shown if email confirmation is required

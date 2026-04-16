@@ -1,6 +1,8 @@
 import { user_clicker } from "@/lib/db";
 import { createContext, useState } from "react";
 
+//currentyly unused. created to assist in passing user stats between clicker page and upgrades.
+//future devolpment includes using this to pull in user data from supabase
 type StatsContext = {
   playerStats: user_clicker;
   setplayerStats: (playerStats: user_clicker) => Promise<void>;

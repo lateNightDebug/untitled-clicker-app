@@ -1,3 +1,5 @@
+
+// local storage creation and manipulation
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const STORAGE_KEYS = {
