@@ -60,7 +60,7 @@ const index = () => {
       // Return function is invoked whenever the route gets out of focus.
 
       return () => {
-      
+
       };
     }, []),
   ),
@@ -142,8 +142,7 @@ const index = () => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       if (playerStats.auto.enabled) {
-        let autopoints: number = playerStats.score + playerStats.base_value;
-        setPlayerStats({ ...playerStats, score: autopoints });
+        click
       }
     }, playerStats.auto.auto_refresh);
     return () => clearInterval(intervalId); // Cleanup
