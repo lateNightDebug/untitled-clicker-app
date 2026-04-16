@@ -1,22 +1,8 @@
-import { user_clicker } from "@/lib/db";
 import { theme } from "@/styles/theme";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { Tabs } from "expo-router";
-import { useState } from "react";
 
 export default function TabLayout() {
-  const [lplayerStats, lsetPlayerStats] = useState<user_clicker>({
-    base_value: 1,
-    multiplier: 1.1,
-    luck: 5,
-    score: 0,
-    refresh: 3000,
-    auto: {
-      enabled: false,
-      auto_refresh: 5000,
-      unlocked: false,
-    },
-  });
   return (
     <Tabs
       screenOptions={{
@@ -37,7 +23,6 @@ export default function TabLayout() {
             />
           ),
         }}
-        initialParams={{ lplayerStats, lsetPlayerStats }}
       />
       <Tabs.Screen
         name="profile"

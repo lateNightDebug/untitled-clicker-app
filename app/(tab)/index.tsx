@@ -16,14 +16,14 @@ import { StyleSheet, Text, View } from "react-native";
 const index = () => {
   const [playerStats, setPlayerStats] = useState<user_clicker>({
     base_value: 1,
-    multiplier: 1,
+    multiplier: 2,
     luck: 5,
     score: 100,
-    refresh: 3000,
+    refresh: 1000,
     auto: {
-      enabled: false,
+      enabled: true,
       auto_refresh: 5000,
-      unlocked: true,
+      unlocked: false,
     },
   });
 
@@ -35,8 +35,8 @@ const index = () => {
     refresh: 3000,
     auto: {
       enabled: false,
-      auto_refresh: 5000,
-      unlocked: true,
+      auto_refresh: 1000,
+      unlocked: false,
     },
   };
   const [isdisabled, setisdisabled] = useState<boolean>(false);
@@ -114,10 +114,14 @@ const index = () => {
     }, playerStats!.refresh);
 
     if (getRandomInt() <= playerStats!.luck) {
-      points = Math.ceil(playerStats!.base_value * playerStats!.multiplier);
+      points =
+        playerStats!.score + playerStats!.base_value * playerStats!.multiplier;
+
+      console.log("lucky", points);
     } else {
       points = playerStats!.score + playerStats!.base_value;
     }
+
     setPlayerStats({ ...playerStats!, score: points });
   };
 
@@ -142,6 +146,16 @@ const index = () => {
       });
     }
   };
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (playerStats.auto.enabled) {
+        let autopoints: number = playerStats.score + playerStats.base_value;
+        setPlayerStats({ ...playerStats, score: autopoints });
+      }
+    }, playerStats.auto.auto_refresh);
+    return () => clearInterval(intervalId); // Cleanup
+  }, [playerStats.auto.enabled]);
 
   return (
     <View style={styles.container}>
